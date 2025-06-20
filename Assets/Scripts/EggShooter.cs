@@ -1,52 +1,41 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class EggShooter : MonoBehaviour
 {
-    [SerializeField] public GameObject eggPrefab;
-    [SerializeField] public GameObject friedEggPrefab;
+    [SerializeField] private GameObject eggPrefab;
+    [SerializeField] private Transform Shooter;
     [SerializeField] private float eggInterval = 0.5f;
+    [SerializeField] private GameObject eggCamera;
 
-    private float time = 0;
-
-    public float forceMultiplier = 5f;
-    private Vector2 startPoint;
+    private float time = 0; //時間制御
+    public float forceMultiplayer = 5f;//加える力
 
     private void Start()
     {
-        
+         
     }
-
 
     private void Update()
     {
-        time += Time.deltaTime;
-        if (Input.GetMouseButtonDown(0))//�}�E�X���������u��
+        time += Time.deltaTime;//正確な時間
+  
+        if (Input.GetMouseButtonUp(0))//マウスを離した瞬間
         {
-            startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            EggFire();//したを呼び出す
         }
-
-        if (Input.GetMouseButtonUp(0))//�}�E�X�𗣂����u��
-        {
-            EggFire();
-            time = 0f;
-        }
-
-
     }
 
     private void EggFire()
     {
         if (time >= eggInterval)
         {
-            Vector2 endPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 direction = startPoint - endPoint;
+            GameObject egg = Instantiate(eggPrefab, Shooter.position, Quaternion.identity);
+            //               生成　　　　何を生成するか、どこに生成するか、角度などの指定
+            egg.GetComponent<Rigidbody2D>().AddForce(Vector2.right * forceMultiplayer, ForceMode2D.Impulse);
+            //　　　　　　　　　　　　　　力を加える（方向（1.0)　*　加える力、力を瞬間に加える）
+            time = 0f;//タイマーリセット
 
-            Vector2 spawnPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            GameObject egg = Instantiate(eggPrefab, spawnPos, Quaternion.identity);
-            egg.GetComponent<Rigidbody2D>().AddForce(direction * forceMultiplier, ForceMode2D.Impulse);
         }
     }
-
-
 }
