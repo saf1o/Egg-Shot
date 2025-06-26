@@ -1,43 +1,79 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Egg : MonoBehaviour
+///<summary>
+///EggObjectにアタッチされるスクリプト
+///カメラ追従・時間経過による処理・frypanとの衝突時の処理
+///</summary>
+public class EggObject : MonoBehaviour
 {
-    [SerializeField] public GameObject friedEggPrefab;
-    public GameObject _eggCamera;
-    public Vector3 _cameraPosition;
-    public float _count = 3;
+    [SerializeField] public GameObject friedEggPrefab;//目玉焼き!
+    public GameObject _eggCamera;//MainCameraちゃん
+    public Vector3 _cameraPosition;//カメラのdefolt位置
+    public float _count = 2;//Eggが出ている時間(秒)
+    
+    private ScoreManager _scoreManager;//スコア管理(参照)
+    private bool isReturningCamera = false;//カメラが元の位置に戻る
+    private Gauge _gauge;// ゲージUI(参照)
 
-    // Start is called before the first frame update
+    // 初期化処理
     void Start()
     {
+        //カメラの初期位置を取得
         _eggCamera = GameObject.Find("Main Camera");
+        // カメラの初期位置を保持
         _cameraPosition = _eggCamera.transform.position;
+        
+        //ScoreManagerとGaugeを取得
+        _scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
+        _gauge = GameObject.Find("Gauge").GetComponent<Gauge>();
     }
 
-    // Update is called once per frame
+    // 毎フレーム呼ばれる処理
     void Update()
     {
-        _eggCamera.transform.position = new Vector3(transform.position.x, transform.position.y,-10f);
+        //カメラがEggを追従している間
+        if (!isReturningCamera)
+        {
+            //カメラが卵の位置に追従する
+            _eggCamera.transform.position = Vector3.Lerp(
+                _eggCamera.transform.position, new Vector3(transform.position.x, transform.position.y, -10f), 0.1f);
+        }
+        // カウントダウン
         _count -= Time.deltaTime;
-
-        Debug.Log(_count);
+        
         if(_count < 0 )
         {
-            _eggCamera.transform.position = _cameraPosition;
-            Destroy(this.gameObject);
+            // フォロー中
+            isReturningCamera = true;// フラグ切り替え
+            _eggCamera.transform.position = _cameraPosition;// defolt位置に戻す
+            _gauge._isCharging = true;// ゲージチャージ開始
+            Destroy(this.gameObject);//Obuject削除
         }
-        
-
+        else
+        {
+            // 元の位置に戻す
+            _eggCamera.transform.position = Vector3.Lerp(
+                _eggCamera.transform.position,
+                _cameraPosition,
+                0.1f);
+        }
     }
 
+    // Frypanに当たった時
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("frypan"))
+        //frypanに接触したとき
+        if (collision.gameObject.CompareTag("frypan"))// タグ
         {
+            // 卵を目玉焼きに変換
             Instantiate(friedEggPrefab, transform.position, Quaternion.identity);
+            // スコア加算
+            ScoreManager.instance.AddScore(1);
+            // カメラを初期位置に
+            _eggCamera.transform.position =  _cameraPosition;
+            // ゲージシャージ開始
+            _gauge._isCharging = true;
+            // 削除
             Destroy(gameObject);
         }
     }
