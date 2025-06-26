@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FriedEgg : MonoBehaviour
@@ -9,15 +8,9 @@ public class FriedEgg : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy();//生成された瞬間に呼び出す
+        Destroy();//時間経過で消す
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     private void Destroy()
     {
         StartCoroutine(DestroyFriedEgg());//時間を使った処理、下を呼び出す

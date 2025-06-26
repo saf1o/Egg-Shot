@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -49,9 +48,6 @@ public class ResultManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-    }
     
     // 保存されたスコアを取得
     List<int> LoadScores()
