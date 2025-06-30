@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 ///<summary>
 ///EggObjectにアタッチされるスクリプト
@@ -9,11 +10,16 @@ public class EggObject : MonoBehaviour
     [SerializeField] public GameObject friedEggPrefab;//目玉焼き!
     public GameObject _eggCamera;//MainCameraちゃん
     public Vector3 _cameraPosition;//カメラのdefolt位置
-    public float _count = 2;//Eggが出ている時間(秒)
+    public float _count = 2f;//Eggが出ている時間(秒)
     
     private ScoreManager _scoreManager;//スコア管理(参照)
-    private bool isReturningCamera = false;//カメラが元の位置に戻る
     private Gauge _gauge;// ゲージUI(参照)
+    
+    private bool isReturningCamera = false;//カメラが元の位置に戻る
+
+    private Action _onDestroy;// 
+    public TimeManager timeManager;
+    
 
     // 初期化処理
     void Start()
@@ -26,6 +32,7 @@ public class EggObject : MonoBehaviour
         //ScoreManagerとGaugeを取得
         _scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         _gauge = GameObject.Find("Gauge").GetComponent<Gauge>();
+        timeManager = GameObject.Find("TimeManager").GetComponent<TimeManager>();
     }
 
     // 毎フレーム呼ばれる処理
@@ -36,7 +43,7 @@ public class EggObject : MonoBehaviour
         {
             //カメラが卵の位置に追従する
             _eggCamera.transform.position = Vector3.Lerp(
-                _eggCamera.transform.position, new Vector3(transform.position.x, transform.position.y, -10f), 0.1f);
+                _eggCamera.transform.position, new Vector3(transform.position.x, 0, -10f), 0.1f);
         }
         // カウントダウン
         _count -= Time.deltaTime;
@@ -47,6 +54,8 @@ public class EggObject : MonoBehaviour
             isReturningCamera = true;// フラグ切り替え
             _eggCamera.transform.position = _cameraPosition;// defolt位置に戻す
             _gauge._isCharging = true;// ゲージチャージ開始
+            _onDestroy?.Invoke();
+            timeManager._isCountStop = true;
             Destroy(this.gameObject);//Obuject削除
         }
         else
@@ -58,13 +67,15 @@ public class EggObject : MonoBehaviour
                 0.1f);
         }
     }
-
+    
+    public void RegisterOnDestroyAction(Action action) => _onDestroy = action;//
     // Frypanに当たった時
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //frypanに接触したとき
         if (collision.gameObject.CompareTag("frypan"))// タグ
         {
+            timeManager._isCountStop = true;
             // 卵を目玉焼きに変換
             Instantiate(friedEggPrefab, transform.position, Quaternion.identity);
             // スコア加算
@@ -74,6 +85,8 @@ public class EggObject : MonoBehaviour
             // ゲージシャージ開始
             _gauge._isCharging = true;
             // 削除
+            _onDestroy?.Invoke();// 実行(?.はnullチェック)
+            
             Destroy(gameObject);
         }
     }
