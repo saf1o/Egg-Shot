@@ -4,15 +4,18 @@ using UnityEngine.SceneManagement;
 
 public class TimeManager : MonoBehaviour
 {
-    [SerializeField] public float _startTime = 15;// ゲーム開始時の制御時間(秒)
+    [SerializeField] private float _startTime = 15;// ゲーム開始時の制御時間(秒)
     [SerializeField] public float _currentTime;// 残り時間(秒)
     public Text timerText;//UIのタイマー表示
+
+    public bool _isCountStop;
     
     // Start is called before the first frame update
     void Start()
     {
         _currentTime = _startTime;// 残り時間を初期化
         UpdateTimerDisplay();// UI表示を更新
+        _isCountStop = true;
     }
 
     // Update is called once per frame
@@ -21,8 +24,11 @@ public class TimeManager : MonoBehaviour
         // 残り時間が０より大きい場合は時間を減らす
         if (_currentTime > 0)
         {
-            _currentTime -= Time.deltaTime;// フレーム毎に経過時間を減算
-            UpdateTimerDisplay();// UI表示を更新
+            if (_isCountStop)
+            {
+                _currentTime -= Time.deltaTime;// フレーム毎に経過時間を減算
+                UpdateTimerDisplay();// UI表示を更新
+            }
         }
         else
         {
