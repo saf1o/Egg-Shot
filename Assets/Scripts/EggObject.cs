@@ -20,6 +20,7 @@ public class EggObject : MonoBehaviour
     private Action _onDestroy;// 
     public TimeManager timeManager;
     
+    
 
     // 初期化処理
     void Start()
@@ -56,7 +57,8 @@ public class EggObject : MonoBehaviour
             _gauge._isCharging = true;// ゲージチャージ開始
             _onDestroy?.Invoke();
             timeManager._isCountStop = true;
-            Destroy(this.gameObject);//Obuject削除
+            ScoreManager.instance.isCountUp = false;
+            Destroy(this.gameObject);//object削除
         }
         else
         {
@@ -72,14 +74,25 @@ public class EggObject : MonoBehaviour
     // Frypanに当たった時
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        
         //frypanに接触したとき
         if (collision.gameObject.CompareTag("frypan"))// タグ
         {
             timeManager._isCountStop = true;
             // 卵を目玉焼きに変換
-            Instantiate(friedEggPrefab, transform.position, Quaternion.identity);
+            var friedEgg = Instantiate(friedEggPrefab, transform.position, Quaternion.identity);
+            friedEgg.gameObject.transform.SetParent(collision.transform);
             // スコア加算
-            ScoreManager.instance.AddScore(1);
+            if (ScoreManager.instance.isCountUp == true)
+            {
+                ScoreManager.instance.AddScore(2);
+            }
+            else
+            {
+                ScoreManager.instance.AddScore(1);
+            }
+            ScoreManager.instance.isCountUp = true;
+            
             // カメラを初期位置に
             _eggCamera.transform.position =  _cameraPosition;
             // ゲージシャージ開始

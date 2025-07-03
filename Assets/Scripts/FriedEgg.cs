@@ -19,6 +19,7 @@ public class FriedEgg : MonoBehaviour
     private IEnumerator DestroyFriedEgg()
     {
         yield return new WaitForSeconds(destroyTime);//ˆê’èŠÔˆ—‚ğ‘Ò‚Á‚Ä‚©‚ç‰º‚ğÀs‚·‚é
+        
         Destroy(gameObject);
     }
 }

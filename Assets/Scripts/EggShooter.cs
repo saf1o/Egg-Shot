@@ -65,6 +65,7 @@ public class EggShooter : MonoBehaviour
             eggObj.RegisterOnDestroyAction(ActiveCanShot);// ActiveCanShot(メソッド)を登録している
             time = 0f;//タイマーリセット
             canShot = false;// 
+            
         }
     }
     

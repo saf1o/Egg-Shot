@@ -13,8 +13,12 @@ public class ScoreManager : MonoBehaviour
     private int _score = 0;
     public int Score  => _score;
 
+    public bool isCountUp = false;
+    
+
     void Awake()
     {
+        isCountUp = false;
         // シングストンの基本実装
         if (instance == null)
         {
@@ -31,7 +35,6 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         _score += amount;  //Enemyなどから加算
-        Debug.Log("スコア加算");
         UpdateScoreText();
     }
     
@@ -41,7 +44,6 @@ public class ScoreManager : MonoBehaviour
         if (_scoreText != null)
         {
             _scoreText.text = "Score : " + _score.ToString();
-            Debug.Log($"スコア+{_score}");
         }
     }
 }

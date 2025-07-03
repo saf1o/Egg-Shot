@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Target : MonoBehaviour
@@ -23,7 +22,8 @@ public class Target : MonoBehaviour
         {
             _currentTargetIndex++;
             _currentTargetIndex %= _target.Length;
-
         }
     }
+
+    
 }

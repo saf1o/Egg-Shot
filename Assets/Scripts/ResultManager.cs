@@ -13,7 +13,7 @@ public class ResultManager : MonoBehaviour
     {
         // スコアをManagerから取得
         int _currentScore = ScoreManager.instance.Score;
-        Debug.Log("現在のスコア: " + _currentScore);
+        
 
         // 保存されたスコアを取得
         List<int> scores = LoadScores();
