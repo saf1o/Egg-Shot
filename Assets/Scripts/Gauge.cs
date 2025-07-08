@@ -22,11 +22,14 @@ public class Gauge : MonoBehaviour
                 _gauge.fillAmount += _fillSpeed * Time.deltaTime;
                 _fillAmount = _gauge.fillAmount;
                 
+                Debug.Log($"[Gauge] 増加中：{_fillAmount:F2}");
+                
                 // ゲージが最大値(1,0)を超えないようにし、増加フラグをfalseに切り替え
                 if (_gauge.fillAmount >= 1f)
                 {
                     _gauge.fillAmount = 1f;
                     _increase = false;// これ以上増やさず減少に切り替え
+                    Debug.Log("[Gauge] 最大値に達したため減少へ切り替え");
                 }
             }
             else
@@ -34,12 +37,14 @@ public class Gauge : MonoBehaviour
                 // ゲージを減少させる(毎秒_fillSpeed分減る)
                 _gauge.fillAmount -= _fillSpeed * Time.deltaTime;
                 _fillAmount = _gauge.fillAmount;// 現在のゲージ値を保持
+                Debug.Log($"[Gauge] 減少中：{_fillAmount:F2}");
                 
                 // ゲージが最小値(0.0)を下回らないようにし、増加フラグをtrueに切り替え
                 if (_gauge.fillAmount <= 0f)
                 {
                     _gauge.fillAmount = 0f;
                     _increase = true;// これ以上減らさずに切り替え
+                    Debug.Log("[Gauge] 最小値に達したため増加へ切り替え");
                 }
             }
         }

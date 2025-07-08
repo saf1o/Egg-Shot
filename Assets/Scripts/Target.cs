@@ -11,7 +11,13 @@ public class Target : MonoBehaviour
 
     void Update()
     {
+        if (_target.Length == 0)
+        {
+            Debug.LogWarning("ターゲットが設定されていません。");
+            return;
+        }
         float distance = Vector2.Distance(this.transform.position, _target[_currentTargetIndex].position);
+        Debug.Log($"[Target] 現在のターゲット {_currentTargetIndex} までの距離: {distance:F2}");
         if (distance > _stoppingDistance)
         {
             Vector3 dir = (_target[_currentTargetIndex].transform.position - this.transform.position).normalized *
@@ -20,10 +26,10 @@ public class Target : MonoBehaviour
         }
         else
         {
+            Debug.Log($"[Target] ターゲット {_currentTargetIndex} に到達");
             _currentTargetIndex++;
             _currentTargetIndex %= _target.Length;
+            Debug.Log($"[Target] 次のターゲットに移動：{_currentTargetIndex}");
         }
     }
-
-    
 }

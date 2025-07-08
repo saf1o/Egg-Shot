@@ -8,6 +8,7 @@ public class FriedEgg : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log($"[FriedEgg] –Ú‹ÊÄ‚«¶¬: {gameObject.name}, íœ‚Ü‚Å {destroyTime} •b");
         Destroy();//ŠÔŒo‰ß‚ÅÁ‚·
     }
     
@@ -19,7 +20,7 @@ public class FriedEgg : MonoBehaviour
     private IEnumerator DestroyFriedEgg()
     {
         yield return new WaitForSeconds(destroyTime);//ˆê’èŠÔˆ—‚ğ‘Ò‚Á‚Ä‚©‚ç‰º‚ğÀs‚·‚é
-        
+        Debug.Log($"[FriedEgg] –Ú‹ÊÄ‚«íœ: {gameObject.name}");
         Destroy(gameObject);
     }
 }

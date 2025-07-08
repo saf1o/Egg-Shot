@@ -14,7 +14,6 @@ public class ScoreManager : MonoBehaviour
     public int Score  => _score;
 
     public bool isCountUp = false;
-    
 
     void Awake()
     {
@@ -24,10 +23,12 @@ public class ScoreManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);// シーンをまたいでも保持
+            Debug.Log("[ScoreManager] インスタンス生成＆永続化されました");
         }
         else
         {
             Destroy(gameObject);// すでに存在する場合は破棄
+            Debug.Log("[ScoreManager] 既に存在するため破棄されました");
         }
     }
     
@@ -35,6 +36,8 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(int amount)
     {
         _score += amount;  //Enemyなどから加算
+        Debug.Log($"[ScoreManager] スコア加算: +{amount}（現在のスコア: {_score}）");
+        
         UpdateScoreText();
     }
     
@@ -44,6 +47,11 @@ public class ScoreManager : MonoBehaviour
         if (_scoreText != null)
         {
             _scoreText.text = "Score : " + _score.ToString();
+            Debug.Log($"[ScoreManager] スコアUI更新: {_scoreText.text}");
+        }
+        else
+        {
+            Debug.LogWarning("[ScoreManager] _scoreText が未設定です！");
         }
     }
 }

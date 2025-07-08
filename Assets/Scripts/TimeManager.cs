@@ -14,8 +14,10 @@ public class TimeManager : MonoBehaviour
     void Start()
     {
         _currentTime = _startTime;// 残り時間を初期化
-        UpdateTimerDisplay();// UI表示を更新
         _isCountStop = true;
+        Debug.Log($"[TimeManager] ゲーム開始。初期時間：{_startTime} 秒");
+        
+        UpdateTimerDisplay();// UI表示を更新
     }
 
     // Update is called once per frame
@@ -28,6 +30,7 @@ public class TimeManager : MonoBehaviour
             {
                 _currentTime -= Time.deltaTime;// フレーム毎に経過時間を減算
                 UpdateTimerDisplay();// UI表示を更新
+                Debug.Log($"[TimeManager] 時間更新：残り {_currentTime:F2} 秒");
             }
         }
         else
@@ -35,6 +38,7 @@ public class TimeManager : MonoBehaviour
             // 時間切れの処理
             _currentTime = 0;// 0に固定
             UpdateTimerDisplay();
+            Debug.Log("[TimeManager] タイムアップ！リザルトシーンへ移動");
             SceneManager.LoadScene("Result");// リザルト画面に遷移
         }
     }
@@ -48,5 +52,6 @@ public class TimeManager : MonoBehaviour
         int minutes = Mathf.FloorToInt(timeToShow / 60);  
         int seconds = Mathf.FloorToInt(timeToShow % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        Debug.Log($"[TimeManager] タイマーUI更新：{minutes:00}:{seconds:00}");
     }
 }

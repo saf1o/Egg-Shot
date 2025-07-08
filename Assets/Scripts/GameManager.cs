@@ -15,10 +15,12 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);// シーンが変わっても残す
+            Debug.Log("[GameManager] インスタンス生成＆永続化");
         }
         else
         {
             Destroy(gameObject);// すでに存在していたら破棄
+            Debug.Log("[GameManager] 既に存在していたため破棄されました");
         }
     }
 
@@ -26,5 +28,9 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         _timer += Time.deltaTime;//毎フレーム時間を加算、_timerを進める
+        if (Mathf.FloorToInt(_timer) % 1 == 0)
+        {
+            Debug.Log("$\"[GameManager] 経過時間: {_timer:F2} 秒\"");
+        }
     }
 }
