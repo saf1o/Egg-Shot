@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using UnityEngine;
 
 public class EggShooter : MonoBehaviour
 {
@@ -45,29 +43,39 @@ public class EggShooter : MonoBehaviour
     {
         _eggCamera = GameObject.Find("Main Camera");
         
-        if (time >= eggInterval && canShot)// 発射間隔
+        // 発射間隔
+        if (time >= eggInterval && canShot)
         {
             Debug.Log("Firing egg...");
 
             // 投げる角度を線形補間
             float angledig = Mathf.Lerp(90f, 0f, _gauge._fillAmount);
-            float angleRad = angledig * Mathf.Deg2Rad; // ラジアンに変換          
+            
+            // ラジアンに変換
+            float angleRad = angledig * Mathf.Deg2Rad;
+            
             // 発射方向のベクトル計算
             Vector2 direction = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
             // Shooter位置に生成
             GameObject egg = Instantiate(eggPrefab, Shooter.position, Quaternion.identity);
-            //               生成　　　　何を生成するか、どこに生成するか、角度などの指定
+            
             // 力を加えて飛ばす
             Debug.Log($"Egg instantiated at {Shooter.position} with angle {angledig}° (fillAmount: {_gauge._fillAmount})");
             egg.GetComponent<Rigidbody2D>().AddForce(direction * forceMultiplayer, ForceMode2D.Impulse);
-            //　　　　　　　　　　　　　　力を加える（方向（1.0)　*　加える力、力を瞬間に加える）
+            
             // カメラに卵をセット
             Debug.Log("Force applied to egg: " + (direction * forceMultiplayer));
+            
             //Main Camera.GetComponent<CameraFollowEgg>().SetEgg(egg);
-            var eggObj = egg.GetComponent<EggObject>();//EggObjectからもってきてる
-            eggObj.RegisterOnDestroyAction(ActiveCanShot);// ActiveCanShot(メソッド)を登録している
+            //EggObjectからもってきてる
+            var eggObj = egg.GetComponent<EggObject>();
+            
+            // ActiveCanShot(メソッド)を登録している
+            eggObj.RegisterOnDestroyAction(ActiveCanShot);
             Debug.Log("OnDestroy action registered.");
-            time = 0f;//タイマーリセット
+            
+            //タイマーリセット
+            time = 0f;
             canShot = false;
         }
         else

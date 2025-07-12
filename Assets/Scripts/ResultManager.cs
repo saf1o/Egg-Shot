@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class ResultManager : MonoBehaviour
 {
     [SerializeField] Text[] _resultText;// ランキングUI
-
-    // Start is called before the first frame update
+    
     void Start()
     {
         // スコアをManagerから取得
@@ -52,8 +51,6 @@ public class ResultManager : MonoBehaviour
             }
         }
     }
-
-    // Update is called once per frame
     
     // 保存されたスコアを取得
     List<int> LoadScores()

@@ -10,17 +10,17 @@ public class TimeManager : MonoBehaviour
 
     public bool _isCountStop;
     
-    // Start is called before the first frame update
     void Start()
     {
-        _currentTime = _startTime;// 残り時間を初期化
+        // 残り時間を初期化
+        _currentTime = _startTime;
         _isCountStop = true;
         Debug.Log($"[TimeManager] ゲーム開始。初期時間：{_startTime} 秒");
         
-        UpdateTimerDisplay();// UI表示を更新
+        // UI表示を更新
+        UpdateTimerDisplay();
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
         // 残り時間が０より大きい場合は時間を減らす
@@ -28,18 +28,24 @@ public class TimeManager : MonoBehaviour
         {
             if (_isCountStop)
             {
-                _currentTime -= Time.deltaTime;// フレーム毎に経過時間を減算
-                UpdateTimerDisplay();// UI表示を更新
+                // フレーム毎に経過時間を減算
+                _currentTime -= Time.deltaTime;
+                
+                // UI表示を更新
+                UpdateTimerDisplay();
                 Debug.Log($"[TimeManager] 時間更新：残り {_currentTime:F2} 秒");
             }
         }
         else
         {
             // 時間切れの処理
-            _currentTime = 0;// 0に固定
+            // 0に固定
+            _currentTime = 0;
             UpdateTimerDisplay();
             Debug.Log("[TimeManager] タイムアップ！リザルトシーンへ移動");
-            SceneManager.LoadScene("Result");// リザルト画面に遷移
+            
+            // リザルト画面に遷移
+            SceneManager.LoadScene("Result");
         }
     }
     
@@ -48,6 +54,7 @@ public class TimeManager : MonoBehaviour
     {
         //時間がマイナスになったときに0以下は切り捨て
         float timeToShow = Mathf.Max(_currentTime, 0f);
+        
         //FloorToIntは、小数点以下を切り捨て
         int minutes = Mathf.FloorToInt(timeToShow / 60);  
         int seconds = Mathf.FloorToInt(timeToShow % 60);

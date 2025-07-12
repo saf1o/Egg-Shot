@@ -7,24 +7,27 @@ using UnityEngine;
 ///</summary>
 public class EggObject : MonoBehaviour
 {
-    [SerializeField] public GameObject friedEggPrefab;//目玉焼き!
-    public GameObject _eggCamera;//MainCameraちゃん
-    public Vector3 _cameraPosition;//カメラのdefolt位置
-    public float _count = 2f;//Eggが出ている時間(秒)
-    private ScoreManager _scoreManager;//スコア管理(参照)
-    private Gauge _gauge;// ゲージUI(参照)    
-    private bool isReturningCamera = false;//カメラが元の位置に戻る
-    private Action _onDestroy;// 
-    public TimeManager timeManager;
+    [SerializeField] public GameObject friedEggPrefab;  // 目玉焼き!
+    public GameObject _eggCamera;  // MainCameraちゃん
+    public Vector3 _cameraPosition;  // カメラのdefolt位置
+    public float _count = 2f;  // Eggが出ている時間(秒)
+    private ScoreManager _scoreManager;  // スコア管理(参照)
+    private Gauge _gauge;  // ゲージUI(参照)    
+    private bool isReturningCamera = false;  // カメラが元の位置に戻る
+    private Action _onDestroy;
+    public TimeManager timeManager;  // Timerを参照
     
     // 初期化処理
     void Start()
     {
         Debug.Log("EggObject Start");
+        
         //カメラの初期位置を取得
         _eggCamera = GameObject.Find("Main Camera");
+        
         // カメラの初期位置を保持
-        _cameraPosition = _eggCamera.transform.position;        
+        _cameraPosition = _eggCamera.transform.position;
+        
         //ScoreManagerとGaugeを取得
         Debug.Log("$\"Camera default position set to {_cameraPosition}");
         _scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
@@ -48,9 +51,13 @@ public class EggObject : MonoBehaviour
         if(_count < 0 )
         {
             Debug.Log("Egg lifetime expired. Returning camera and destroying egg.");
+            
             // フォロー中
-            isReturningCamera = true;// フラグ切り替え
-            _eggCamera.transform.position = _cameraPosition;// defolt位置に戻す
+            // フラグ切り替え
+            isReturningCamera = true;
+            
+            // default位置に戻す
+            _eggCamera.transform.position = _cameraPosition;
             if (_gauge != null)
             {
                 _gauge._isCharging = true;
@@ -60,7 +67,7 @@ public class EggObject : MonoBehaviour
             _onDestroy?.Invoke();
             timeManager._isCountStop = true;
             ScoreManager.instance.isCountUp = false;
-            Destroy(this.gameObject);//object削除
+            Destroy(this.gameObject);
         }
         else
         {
@@ -112,13 +119,15 @@ public class EggObject : MonoBehaviour
 
             if (_gauge != null)
             {
-                _gauge._isCharging = true; // ゲージシャージ開始
+                // ゲージシャージ開始
+                _gauge._isCharging = true;
                 Debug.Log("Gauge charging started.");
             }
             
             
             // 削除
-            _onDestroy?.Invoke();// 実行(?.はnullチェック)            
+            // 実行(?.はnullチェック)
+            _onDestroy?.Invoke();         
             Destroy(gameObject);
             Debug.Log("EggObject destroyed.");
         }

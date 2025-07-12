@@ -25,6 +25,7 @@ public class Scene : MonoBehaviour
         PlaySound();
         StartCoroutine(ChangeInGameScene());
     }
+    
     private IEnumerator ChangeInGameScene()
     {
         Debug.Log($"[Scene] {delaySeconds} 秒後に InGame シーンに遷移します");
@@ -44,6 +45,7 @@ public class Scene : MonoBehaviour
         Debug.Log("[Scene] Title シーンに遷移します");
         SceneManager.LoadScene("Title");
     }
+    
     public void PlaySound()
     {
         if (audioSource != null && audioSource.clip != null)

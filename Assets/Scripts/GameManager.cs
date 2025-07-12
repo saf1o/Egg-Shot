@@ -6,28 +6,31 @@ public class GameManager : MonoBehaviour
     float _timer;
     public float Timer => _timer;
 
-    public bool IsCountUp => _timer >= 15;// 経過時間が15秒以上ならtrueを返す
-    　
-    // Start is called before the first frame update
+    // 経過時間が15秒以上ならtrueを返す
+    public bool IsCountUp => _timer >= 15;
+    
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);// シーンが変わっても残す
+            
+            // シーンが変わっても残す
+            DontDestroyOnLoad(gameObject);
             Debug.Log("[GameManager] インスタンス生成＆永続化");
         }
         else
         {
-            Destroy(gameObject);// すでに存在していたら破棄
+            // すでに存在していたら破棄
+            Destroy(gameObject);
             Debug.Log("[GameManager] 既に存在していたため破棄されました");
         }
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
-        _timer += Time.deltaTime;//毎フレーム時間を加算、_timerを進める
+        //毎フレーム時間を加算、_timerを進める
+        _timer += Time.deltaTime;
         if (Mathf.FloorToInt(_timer) % 1 == 0)
         {
             Debug.Log("$\"[GameManager] 経過時間: {_timer:F2} 秒\"");

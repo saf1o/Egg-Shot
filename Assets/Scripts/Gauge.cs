@@ -6,7 +6,6 @@ public class Gauge : MonoBehaviour
     [SerializeField] private Image _gauge;// ゲージのImageコンポーネント
     [SerializeField] private float _fillSpeed;// ゲージにの増減速度
     
-    
     private bool _increase = false;// ゲージが増量中かどうかのフラグ
     public bool _isCharging = false;// ゲージのチャージ中かどうかのフラグ
     public float _fillAmount;// 現在のゲージの割合(0~1)

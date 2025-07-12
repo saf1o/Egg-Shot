@@ -22,12 +22,15 @@ public class ScoreManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);// シーンをまたいでも保持
+            
+            // シーンをまたいでも保持
+            DontDestroyOnLoad(gameObject);
             Debug.Log("[ScoreManager] インスタンス生成＆永続化されました");
         }
         else
         {
-            Destroy(gameObject);// すでに存在する場合は破棄
+            // すでに存在する場合は破棄
+            Destroy(gameObject);
             Debug.Log("[ScoreManager] 既に存在するため破棄されました");
         }
     }
@@ -35,7 +38,8 @@ public class ScoreManager : MonoBehaviour
     // スコア加算のメソッド
     public void AddScore(int amount)
     {
-        _score += amount;  //Enemyなどから加算
+        //Enemyなどから加算
+        _score += amount;
         Debug.Log($"[ScoreManager] スコア加算: +{amount}（現在のスコア: {_score}）");
         
         UpdateScoreText();
