@@ -88,5 +88,15 @@ public class EggShooter : MonoBehaviour
     {
         canShot = true;
         Debug.Log("canShot is now TRUE");
+
+        if (_gauge != null)
+        {
+            _gauge._isCharging = true;
+            Debug.Log("Gauge charging restarted");
+        }
+        else
+        {
+            Debug.Log("_gauge is NULL inActiveCanShot!");
+        }
     }
 }
